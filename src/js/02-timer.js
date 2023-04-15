@@ -2,7 +2,6 @@ import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
-// Отримання елементів DOM
 const dateTimePicker = document.querySelector('#datetime-picker');
 const startBtn = document.querySelector('button[data-start]');
 const daysTimer = document.querySelector('[data-days]');
@@ -10,7 +9,7 @@ const hoursTimer = document.querySelector('[data-hours]');
 const minutesTimer = document.querySelector('[data-minutes]');
 const secondsTimer = document.querySelector('[data-seconds]');
 
-startBtn.disabled = true; // Виправлення помилки в назві властивості
+startBtn.disabled = true;
 let timerInterval;
 
 const options = {
@@ -39,7 +38,7 @@ function convertMs(ms) {
     const day = hour * 24;
 
     /* конвертація часу */
-    const days = Math.ceil(ms / day); // змінено Math.floor на Math.ceil
+    const days = Math.floor(ms / day); 
     const hours = Math.floor((ms % day) / hour);
     const minutes = Math.floor(((ms % day) % hour) / minute);
     const seconds = Math.floor((((ms % day) % hour) % minute) / second);
@@ -57,10 +56,10 @@ function addLeadingZero(value) {
 }
 
 function startTimer() {
-    const selectedDate = dateTimePicker.value; /* Отримуємо вибрану користувачем дату без використання formatDate */
-    const selectedTimestamp = new Date(selectedDate).getTime(); /* Конвертуємо дату у відповідний таймстемп */
-    const currentTimestamp = new Date().getTime(); /* Отримуємо поточний таймстемп */
-    const timeDifference = selectedTimestamp - currentTimestamp; /* Обчислюємо різницю в часі між вибраною датою і поточним часом в мілісекундах */
+    const selectedDate = dateTimePicker.value; /* Отримуємо вибрану користувачем дату */
+    const selectedTimestamp = new Date(selectedDate).getTime(); /* конвертуємо дату у відповідний таймстемп */
+    const currentTimestamp = new Date().getTime(); /* отримуємо поточний таймстемп */
+    const timeDifference = selectedTimestamp - currentTimestamp; /* обчислюємо різницю в часі між вибраною датою і поточним часом в мілісекундах */
 
     if (timeDifference <= 0) {
         stopTimer();
@@ -81,11 +80,11 @@ function stopTimer() {
 }
 
 function onBtnClick() {
-    // Очищення попереднього інтервалу (якщо він є)
+    // Очищення попереднього інтервалу
     stopTimer();
 
     // Запуск нового інтервалу
-    timerInterval = setInterval(startTimer, 1000); // Оновлювати таймер кожну секунду
+    timerInterval = setInterval(startTimer, 1000); // Оновлюватиме таймер кожну секунду
 
     // Заборона кліку на кнопку під час роботи таймера
     startBtn.disabled = true;
