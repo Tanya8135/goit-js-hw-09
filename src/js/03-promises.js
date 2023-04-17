@@ -13,11 +13,9 @@ function createPromise(position, delay) {
     setTimeout(() => {
       if (shouldResolve) {
         // Fulfill
-        Notiflix.Notify.success(`Fulfilled promise ${position} in ${delay}ms`);
         resolve({ position, delay });
       } else {
         // Reject
-        Notiflix.Notify.failure(`Rejected promise ${position} in ${delay}ms`);
         reject({ position, delay });
       }
     }, delay);
@@ -26,6 +24,8 @@ function createPromise(position, delay) {
 
 submitBtn.addEventListener('click', (evt) => {
   evt.preventDefault();
+
+  submitBtn.disabled = true;
 
   /* буде отримуватися значення з введених полів форми */
 const delayValue = parseInt(delayInput.value);
@@ -42,6 +42,10 @@ for (let i = 0; i < amountValue; i += 1) {
     })
     .catch(() => {
       Notiflix.Notify.failure(`Rejected promise ${position} in ${delay}ms`);
+    })
+    .finally(() => {
+      form.reset();
+      submitBtn.disabled = false;
     })
 };
 });
