@@ -22,30 +22,38 @@ function createPromise(position, delay) {
   });
 }
 
+submitBtn.disabled = true;
+// деактивація кнопки при пустих полях форми
+form.addEventListener('input', () => {
+  const delayValue = parseInt(delayInput.value);
+  const stepValue = parseInt(stepInput.value);
+  const amountValue = parseInt(amountInput.value);
+  submitBtn.disabled = isNaN(delayValue) || isNaN(stepValue) || isNaN(amountValue);
+});
+
 submitBtn.addEventListener('click', (evt) => {
   evt.preventDefault();
-
   submitBtn.disabled = true;
 
   /* буде отримуватися значення з введених полів форми */
-const delayValue = parseInt(delayInput.value);
-const stepValue = parseInt(stepInput.value);
-const amountValue = parseInt(amountInput.value);
+  const delayValue = parseInt(delayInput.value);
+  const stepValue = parseInt(stepInput.value);
+  const amountValue = parseInt(amountInput.value);
 
-for (let i = 0; i < amountValue; i += 1) {
-  const position = i + 1;
-  const delay = delayValue + i * stepValue;
-  createPromise(position, delay)
-    .then(() => {
-
-      Notiflix.Notify.success(`Fulfilled promise ${position} in ${delay}ms`);
-    })
-    .catch(() => {
-      Notiflix.Notify.failure(`Rejected promise ${position} in ${delay}ms`);
-    })
-    .finally(() => {
-      form.reset();
-      submitBtn.disabled = false;
-    })
-};
+  for (let i = 0; i < amountValue; i += 1) {
+    const position = i + 1;
+    const delay = delayValue + i * stepValue;
+    
+    createPromise(position, delay)
+      .then(() => {
+        Notiflix.Notify.success(`Fulfilled promise ${position} in ${delay}ms`);
+      })
+      .catch(() => {
+        Notiflix.Notify.failure(`Rejected promise ${position} in ${delay}ms`);
+      })
+      .finally(() => {
+        form.reset();
+        submitBtn.disabled = true;
+      })
+  };
 });
